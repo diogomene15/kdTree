@@ -3,14 +3,14 @@
 
 typedef struct node{
     void *val;
-    struct node* dir;
-    struct node* esq;
-}node;
+    struct node* d;
+    struct node* e;
+}tnode;
 
 typedef struct kdtree{
-    node *raiz;
-    int k;
-    int (*compara)(void* a, void* b, int k);
-};
+    tnode *raiz;
+    int k; //Resolvi não fixar as dimensões da árvore para duas
+    int (*comparador)(void* a, void* b, int k);
+}kdtree;
 
 #endif //KDTREE_H
