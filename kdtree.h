@@ -10,7 +10,10 @@ typedef struct node{
 typedef struct kdtree{
     tnode *raiz;
     int k; //Resolvi não fixar as dimensões da árvore para duas
-    int (*comparador)(void* a, void* b, int k);
+    int (*comparador)(const void* a, const void* b);
 }kdtree;
 
+void montarArvore(kdtree* arv, int k, int (*comparador)(const void* a, const void *b));
+void inserirItem(kdtree* arv, void* item);
+void inserirPontosMedios(kdtree * arv, void** pontos, int qtdPontos, int (*comparador)(const void* a, const void *b));
 #endif //KDTREE_H
