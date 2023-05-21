@@ -9,6 +9,7 @@ typedef struct node{
 
 typedef struct kdtree{
     node *raiz;
+    int k;
     int (*compara)(void* a, void* b, int k);
 };
 
