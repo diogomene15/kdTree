@@ -107,12 +107,24 @@ void testeAcharMaisProx(){
     pontos[6] = p7;
     inserirPontosMedios(arv,(void**)pontos, 7, comparador);
 
+    int pontoPesquisa[] = {10,2};
+    tnode* res = acharPontoMaisProx(arv, pontoPesquisa);
+    assert(res->val == p7);
+
+    int pontoPesquisa2[] = {7,5};
+    res = acharPontoMaisProx(arv, pontoPesquisa2);
+    assert(res->val == p3);
+
+    int pontoPesquisa3[] = {4,1};
+    res = acharPontoMaisProx(arv, pontoPesquisa3);
+    assert(res->val == p1);
 }
 
 int main(){
     testeMontarArvore();
     testeInsercaoItem();
     testeInsercaoPontos();
+    testeAcharMaisProx();
     return EXIT_SUCCESS;
 }
 

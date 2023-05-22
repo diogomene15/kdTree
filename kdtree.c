@@ -8,6 +8,7 @@ void montarArvore(kdtree* arv, int k, int (*comparador)(const void* a, const voi
 }
 
 void inserirItem(kdtree* arv, void* item){
+    //Só deve ser chamada após montarArvore e inserirPontosMedios
     tnode **pNode = &(*arv).raiz;
     int profundidade = 0;
     while((*pNode) != NULL){
@@ -66,6 +67,12 @@ void ordenarPontosPorD(void** pontos, int inicio, int fim, int k, int (*comparad
      (*nodeRes).d = inserirPontosMediosRaiz(pontos, mediana+1, fim, (k+1)% maxK, maxK,comparador);
      return nodeRes;
  }
+ /**
+ * Deve ser o método utilizado para fazer a inserção dos nós
+ * na árvore após sua montagem. Isso pois garante que a árvore
+ * esteja balanceada - ou seja, as operações de pesquisa pelo(s) nó(s)
+ * mais próximo(s) serão mais eficientes ( complexidade O(nLogN) ).
+ **/
  void inserirPontosMedios(kdtree * arv, void** pontos, int qtdPontos, int (*comparador)(const void* a, const void *b, int k)){
      (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos-1, 0, (*arv).k, comparador);
 }
