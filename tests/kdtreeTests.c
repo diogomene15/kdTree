@@ -21,7 +21,7 @@ void testeMontarArvore() {
     assert(arvore.comparador == comparador);
 }
 void testeInsercaoItem(){
-    kdtree* arv = (kdtree*) malloc(sizeof(arv));
+    kdtree* arv = (kdtree*) malloc(sizeof(kdtree));
     montarArvore(arv, 2, comparador);
 
     int p1[] = {1,2};
@@ -58,11 +58,11 @@ void testeInsercaoItem(){
 
     assert(arv->raiz->e->d->val == (void*)p5);
     assert(arv->raiz->e->d->pai == arv->raiz->e);
-
+    free(arv);
 }
 
 void testeInsercaoPontos(){
-    kdtree* arv = (kdtree*) malloc(sizeof(arv));
+    kdtree* arv = (kdtree*) malloc(sizeof(kdtree));
     montarArvore(arv, 2, comparador);
 
     int p1[] = {4,5};
@@ -97,10 +97,11 @@ void testeInsercaoPontos(){
     inserirPontosMedios(arv,(void**)pontos, 1, comparador);
     assert(arv->raiz->val == p2);
     free(pontos);
+    free(arv);
 }
 
 void testeAcharMaisProx(){
-    kdtree* arv = (kdtree*) malloc(sizeof(arv));
+    kdtree* arv = (kdtree*) malloc(sizeof(kdtree));
     montarArvore(arv, 2, comparador);
 
     int p1[] = {4,5};
@@ -132,6 +133,59 @@ void testeAcharMaisProx(){
     int pontoPesquisa3[] = {4,1};
     res = acharPontoMaisProx(arv, pontoPesquisa3);
     assert(res->val == p1);
+    free(pontos);
+    free(arv);
+}
+void testaSucessor(){
+    kdtree* arv = (kdtree*) malloc(sizeof(kdtree));
+    montarArvore(arv, 2, comparador);
+
+    int p1[] = {1,2};
+    int p2[] = {3,4};
+    int p3[] = {4,5};
+    int p4[] = {0, 0};
+    int p5[] = {0,10};
+
+    inserirItem(arv, p1);
+    inserirItem(arv, p2);
+    inserirItem(arv, p3);
+    inserirItem(arv, p1);
+    inserirItem(arv, p4);
+    inserirItem(arv, p1);
+    inserirItem(arv, p5);
+
+    assert(sucessor(arv->raiz->e) == arv->raiz->e->d);
+    assert(sucessor(arv->raiz->e->e) == arv->raiz->e->e->d);
+    assert(sucessor(arv->raiz->d) == arv->raiz->d->d);
+    assert(sucessor(arv->raiz->e->d) == arv->raiz);
+    assert(sucessor(arv->raiz) == arv->raiz->d);
+
+    free(arv);
+}
+void testaAntecessor(){
+    kdtree* arv = (kdtree*) malloc(sizeof(kdtree));
+    montarArvore(arv, 2, comparador);
+
+    int p1[] = {1,2};
+    int p2[] = {3,4};
+    int p3[] = {4,5};
+    int p4[] = {0, 0};
+    int p5[] = {0,10};
+
+    inserirItem(arv, p1);
+    inserirItem(arv, p2);
+    inserirItem(arv, p3);
+    inserirItem(arv, p1);
+    inserirItem(arv, p4);
+    inserirItem(arv, p1);
+    inserirItem(arv, p5);
+
+    assert(antecessor(arv->raiz) == arv->raiz->e->d);
+    assert(antecessor(arv->raiz->d) == arv->raiz);
+    assert(antecessor(arv->raiz->d->d) == arv->raiz->d);
+    assert(antecessor(arv->raiz->e->d) == arv->raiz->e);
+
+    free(arv);
 }
 
 int main(){
@@ -139,6 +193,8 @@ int main(){
     testeInsercaoItem();
     testeInsercaoPontos();
     testeAcharMaisProx();
+    testaSucessor();
+    testaAntecessor();
     return EXIT_SUCCESS;
 }
 

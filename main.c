@@ -22,6 +22,6 @@ int main() {
     inserirItem(arv, p1);
     inserirItem(arv, p4);
     inserirItem(arv, p1);
-
+    free(arv);
     return EXIT_SUCCESS;
 }

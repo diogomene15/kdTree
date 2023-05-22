@@ -130,3 +130,49 @@ tnode *acharPontoMaisProx(kdtree *arv, void *ponto) {
 
     return pontoMaisProx;
 }
+
+tnode* sucessor(tnode* node){
+    if(node == NULL) return NULL;
+    
+    tnode* pNode = node;
+    if(pNode->d != NULL){
+        pNode = pNode->d;
+        while (pNode->e != NULL){
+            pNode = pNode->e;
+        }
+        return pNode;
+    }else{
+        while(pNode->pai != NULL){
+            if(pNode == pNode->pai->d){
+                pNode = pNode->pai;
+            }
+            else{
+                return pNode->pai;
+            }
+        }
+    }
+    return NULL;
+}
+
+tnode* antecessor(tnode* node){
+    if(node == NULL) return NULL;
+    
+    tnode* pNode = node;
+    if(pNode->e != NULL){
+        pNode = pNode->e;
+        while (pNode->d != NULL){
+            pNode = pNode->d;
+        }
+        return pNode;
+    }else{
+        while(pNode->pai != NULL){
+            if(pNode == pNode->pai->e){
+                pNode = pNode->pai;
+            }
+            else{
+                return pNode->pai;
+            }
+        }
+    }
+    return NULL;
+}
