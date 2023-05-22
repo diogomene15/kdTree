@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "kdtree.h"
- int comparador(const void* a, const void* b){
+ int comparador(const void* a, const void* b, int k){
      //comparador de inteiros
-     int a1 = *((int*) a);
-     int b1 = *((int*) b);
+     int a1 = ((int*) a)[k];
+     int b1 = ((int*) b)[k];
      return a1 - b1;
  }
 int main() {

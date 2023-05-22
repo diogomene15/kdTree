@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "../kdtree.h"
-#include <stdio.h>
-int comparador(const void* a, const void* b){
+
+int comparador(const void* a, const void* b, int k){
     //comparador de inteiros
-    int a1 = *((int*) a);
-    int b1 = *((int*) b);
+    int a1 = ((int*) a)[k];
+    int b1 = ((int*) b)[k];
     return a1 - b1;
 }
 
@@ -67,7 +67,6 @@ void testeInsercaoPontos(){
     pontos[4] = p5;
     pontos[5] = p6;
     pontos[6] = p7;
-
     inserirPontosMedios(arv,(void**)pontos, 7, comparador);
     assert(arv->raiz->val == p1);
     assert(arv->raiz->e->val == p2);
@@ -84,6 +83,30 @@ void testeInsercaoPontos(){
     inserirPontosMedios(arv,(void**)pontos, 1, comparador);
     assert(arv->raiz->val == p2);
     free(pontos);
+}
+
+void testeAcharMaisProx(){
+    kdtree* arv = (kdtree*) malloc(sizeof(arv));
+    montarArvore(arv, 2, comparador);
+
+    int p1[] = {4,5};
+    int p2[] = {1,4};
+    int p3[] = {7,4};
+    int p4[] = {-2,4};
+    int p5[] = {-4,2};
+    int p6[] = {8,6};
+    int p7[] = {9,2};
+
+    int** pontos = (int**) malloc(7*sizeof(int*));
+    pontos[0] = p2;
+    pontos[1] = p1;
+    pontos[2] = p3;
+    pontos[3] = p4;
+    pontos[4] = p5;
+    pontos[5] = p6;
+    pontos[6] = p7;
+    inserirPontosMedios(arv,(void**)pontos, 7, comparador);
+
 }
 
 int main(){
