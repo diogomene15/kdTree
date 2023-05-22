@@ -75,7 +75,7 @@ tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int ma
 * Deve ser o método utilizado para fazer a inserção dos nós
 * na árvore após sua montagem. Isso pois garante que a árvore
 * esteja balanceada - ou seja, as operações de pesquisa pelo(s) nó(s)
-* mais próximo(s) serão mais eficientes ( complexidade O(nLogN) ).
+* mais próximo(s) serão mais eficientes ( complexidade O(log n) ).
 **/
 void
 inserirPontosMedios(kdtree *arv, void **pontos, int qtdPontos, int (*comparador)(const void *a, const void *b, int k)) {
