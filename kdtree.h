@@ -9,7 +9,7 @@ typedef struct node{
 
 typedef struct kdtree{
     tnode *raiz;
-    int k; //Resolvi não fixar as dimensões da árvore para duas
+    int k; //Resolvi não fixar as dimensões da árvore
     int (*comparador)(const void* a, const void* b);
 }kdtree;
 

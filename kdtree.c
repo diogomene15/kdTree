@@ -62,7 +62,7 @@ void ordenarPontosPorD(void** pontos, int inicio, int fim, int k, int (*comparad
      ordenarPontosPorD(pontos, inicio, fim, k, comparador);
      int mediana = (fim+inicio)/2;
      (*nodeRes).val = pontos[mediana];
-     (*nodeRes).e = inserirPontosMediosRaiz(pontos, 0, mediana-1, (k+1)% maxK, maxK,comparador);
+     (*nodeRes).e = inserirPontosMediosRaiz(pontos, inicio, mediana-1, (k+1)% maxK, maxK,comparador);
      (*nodeRes).d = inserirPontosMediosRaiz(pontos, mediana+1, fim, (k+1)% maxK, maxK,comparador);
      return nodeRes;
  }
