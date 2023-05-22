@@ -10,8 +10,10 @@ void montarArvore(kdtree *arv, int k, int (*comparador)(const void *a, const voi
 void inserirItem(kdtree *arv, void *item) {
     //Só deve ser chamada após montarArvore e inserirPontosMedios
     tnode **pNode = &(*arv).raiz;
+    tnode **nodePai = NULL;
     int profundidade = 0;
     while ((*pNode) != NULL) {
+        nodePai = pNode;
         int kCompara = profundidade % (*arv).k;
         if ((*arv).comparador((**pNode).val, item, kCompara) >= 0) {
             pNode = &(**pNode).e;
@@ -21,6 +23,7 @@ void inserirItem(kdtree *arv, void *item) {
         profundidade++;
     }
     tnode *novo = (tnode *) malloc(sizeof(tnode));
+    (*novo).pai = nodePai!= NULL ? (*nodePai) : NULL;
     (*novo).e = NULL;
     (*novo).d = NULL;
     (*novo).val = item;

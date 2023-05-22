@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
 #include "../kdtree.h"
 
 int comparador(const void* a, const void* b, int k){
@@ -38,12 +39,25 @@ void testeInsercaoItem(){
     inserirItem(arv, p5);
 
     assert(arv->raiz->val == (void*)p1);
+    assert(arv->raiz->pai == NULL);
+
     assert(arv->raiz->d->val == (void*)p2);
+    assert(arv->raiz->d->pai == arv->raiz);
+
     assert(arv->raiz->d->d->val == (void*)p3);
+    assert(arv->raiz->d->d->pai == arv->raiz->d);
+
     assert(arv->raiz->e->val == (void*)p1);
+    assert(arv->raiz->e->pai == arv->raiz);
+
     assert(arv->raiz->e->e->val == (void*)p4);
+    assert(arv->raiz->e->e->pai == arv->raiz->e);
+
     assert(arv->raiz->e->e->d->val == (void*)p1);
+    assert(arv->raiz->e->e->d->pai == arv->raiz->e->e);
+
     assert(arv->raiz->e->d->val == (void*)p5);
+    assert(arv->raiz->e->d->pai == arv->raiz->e);
 
 }
 

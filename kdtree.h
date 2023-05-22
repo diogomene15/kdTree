@@ -3,6 +3,7 @@
 
 typedef struct node{
     void *val;
+    struct node* pai;
     struct node* d;
     struct node* e;
 }tnode;
