@@ -70,6 +70,6 @@ void ordenarPontosPorD(void** pontos, int inicio, int fim, int k, int (*comparad
      (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos-1, 0, (*arv).k, comparador);
 }
 
-// void acharMaisProx(kdtree* arv, void* ponto){
+void acharMaisProx(kdtree* arv, void* ponto){
 
-// }
+}
