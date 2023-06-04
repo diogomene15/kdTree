@@ -85,11 +85,11 @@ void testeInsercaoItemCoord() {
     kdtree *arv = (kdtree *) malloc(sizeof(kdtree));
     montarArvore(arv, 2, comparadorObjeto);
 
-    coord p1 = {'a',1, 2};
-    coord p2 = {'a',3, 4};
-    coord p3 = {'a',4, 5};
-    coord p4 = {'a',0, 0};
-    coord p5 = {'a',0, 10};
+    coord p1; p1.dummy = 'a'; p1.lat= 1; p1.lon = 2;
+    coord p2; p2.dummy = 'a'; p2.lat= 3; p2.lon = 4;
+    coord p3; p3.dummy = 'a'; p3.lat= 4; p3.lon = 5;
+    coord p4; p4.dummy = 'a'; p4.lat= 0; p4.lon = 0;
+    coord p5; p5.dummy = 'a'; p5.lat= 0; p5.lon = 1;
 
     inserirItem(arv, &p1);
     inserirItem(arv, &p2);
@@ -117,8 +117,8 @@ void testeInsercaoItemCoord() {
     assert(arv->raiz->e->e->d->val == (void *) &p1);
     assert(arv->raiz->e->e->d->pai == arv->raiz->e->e);
 
-    assert(arv->raiz->e->d->val == (void *) &p5);
-    assert(arv->raiz->e->d->pai == arv->raiz->e);
+    assert(arv->raiz->e->e->e->val == (void *) &p5);
+    assert(arv->raiz->e->e->pai == arv->raiz->e);
     free(arv);
 }
 
@@ -203,13 +203,13 @@ void testeAcharMaisProxCoord() {
     kdtree *arv = (kdtree *) malloc(sizeof(kdtree));
     montarArvore(arv, 2, comparadorObjeto);
 
-    coord p1 = {'a',4, 5};
-    coord p2 = {'a',1, 4};
-    coord p3 = {'a',7, 4};
-    coord p4 = {'a',-2, 4};
-    coord p5 = {'a',-4, 2};
-    coord p6 = {'a',8, 6};
-    coord p7 = {'a',9, 2};
+    coord p1; p1.dummy = 'a'; p1.lat =4; p1.lon = 5;
+    coord p2; p2.dummy = 'a'; p2.lat =1; p2.lon = 4;
+    coord p3; p3.dummy = 'a'; p3.lat =7; p3.lon = 4;
+    coord p4; p4.dummy = 'a'; p4.lat =-2; p4.lon = 4;
+    coord p5; p5.dummy = 'a'; p5.lat =-4; p5.lon = 2;
+    coord p6; p6.dummy = 'a'; p6.lat =8; p6.lon = 6;
+    coord p7; p7.dummy = 'a'; p7.lat =9; p7.lon = 2;
 
     coord **pontos = (coord **) malloc(7 * sizeof(coord*));
     pontos[0] = &p2;
@@ -221,18 +221,27 @@ void testeAcharMaisProxCoord() {
     pontos[6] = &p7;
     inserirPontosMedios(arv, (void **) pontos, 7);
 
-    coord pontoPesquisa[] = {'a',10, 2};
-    tnode *res = acharPontoMaisProx(arv, pontoPesquisa);
+    coord pontoPesquisa;
+    pontoPesquisa.dummy = 'a';
+    pontoPesquisa.lat = 10;
+    pontoPesquisa.lon =2;
+    tnode *res = acharPontoMaisProx(arv, &pontoPesquisa);
     assert((*(coord *)res->val).lat == p7.lat);
     assert((*(coord *)res->val).lon == p7.lon);
 
-    coord pontoPesquisa2[] = {'a',7, 5};
-    res = acharPontoMaisProx(arv, pontoPesquisa2);
+    coord pontoPesquisa2;
+    pontoPesquisa2.dummy = 'a';
+    pontoPesquisa2.lat = 7;
+    pontoPesquisa2.lon =5;
+    res = acharPontoMaisProx(arv, &pontoPesquisa2);
     assert((*(coord *)res->val).lat == p3.lat);
     assert((*(coord *)res->val).lon == p3.lon);
 
-    coord pontoPesquisa3[] = {'a',4, 1};
-    res = acharPontoMaisProx(arv, pontoPesquisa3);
+    coord pontoPesquisa3;
+    pontoPesquisa3.dummy = 'a';
+    pontoPesquisa3.lat = 4;
+    pontoPesquisa3.lon =1;
+    res = acharPontoMaisProx(arv, &pontoPesquisa3);
     assert((*(coord *)res->val).lat == p1.lat);
     assert((*(coord *)res->val).lon == p1.lon);
     free(pontos);
