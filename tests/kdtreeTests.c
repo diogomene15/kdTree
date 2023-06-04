@@ -145,13 +145,27 @@ void testeInsercaoPontos() {
     pontos[6] = p7;
     inserirPontosMedios(arv, (void **) pontos, 7);
     assert(arv->raiz->val == p1);
+    assert(arv->raiz->pai == NULL);
+
     assert(arv->raiz->e->val == p2);
+    assert(arv->raiz->e->pai == arv->raiz);
+
     assert(arv->raiz->e->d->val == p4);
+    assert(arv->raiz->e->d->pai == arv->raiz->e);
+
     assert(arv->raiz->e->e->val == p5);
+    assert(arv->raiz->e->e->pai == arv->raiz->e);
+
 
     assert(arv->raiz->d->val == p3);
+    assert(arv->raiz->d->pai == arv->raiz);
+
     assert(arv->raiz->d->d->val == p6);
+    assert(arv->raiz->d->d->pai == arv->raiz->d);
+
+
     assert(arv->raiz->d->e->val == p7);
+    assert(arv->raiz->d->e->pai == arv->raiz->d);
     free(pontos);
 
     pontos = calloc(1, sizeof(int *));
