@@ -83,8 +83,8 @@ tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int ma
 * mais próximo(s) serão mais eficientes ( complexidade O(log n) ).
 **/
 void
-inserirPontosMedios(kdtree *arv, void **pontos, int qtdPontos, int (*comparador)(const void *a, const void *b, int k)) {
-    (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos - 1, 0, (*arv).k, NULL, comparador);
+inserirPontosMedios(kdtree *arv, void **pontos, int qtdPontos) {
+    (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos - 1, 0, (*arv).k, NULL, (*arv).comparador);
 }
 
 double calcularDistancia(void *a, void *b, int kMax, int (*comparador)(const void *a, const void *b, int k)) {

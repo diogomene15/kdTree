@@ -16,7 +16,7 @@ typedef struct kdtree{
 
 void montarArvore(kdtree* arv, int k, int (*comparador)(const void* a, const void *b, int k));
 void inserirItem(kdtree* arv, void* item);
-void inserirPontosMedios(kdtree * arv, void** pontos, int qtdPontos, int (*comparador)(const void* a, const void *b, int k));
+void inserirPontosMedios(kdtree * arv, void** pontos, int qtdPontos);
 tnode* acharPontoMaisProx(kdtree* arv, void* ponto);
 tnode* sucessor(tnode* node);
 tnode* antecessor(tnode* node);

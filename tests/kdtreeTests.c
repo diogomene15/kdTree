@@ -10,7 +10,7 @@ int comparador(const void *a, const void *b, int k) {
     return a1 - b1;
 }
 
-typedef struct latLon {
+typedef struct coord {
     char dummy;
     int lat;
     int lon;
@@ -143,7 +143,7 @@ void testeInsercaoPontos() {
     pontos[4] = p5;
     pontos[5] = p6;
     pontos[6] = p7;
-    inserirPontosMedios(arv, (void **) pontos, 7, comparador);
+    inserirPontosMedios(arv, (void **) pontos, 7);
     assert(arv->raiz->val == p1);
     assert(arv->raiz->e->val == p2);
     assert(arv->raiz->e->d->val == p4);
@@ -156,7 +156,7 @@ void testeInsercaoPontos() {
 
     pontos = calloc(1, sizeof(int *));
     pontos[0] = p2;
-    inserirPontosMedios(arv, (void **) pontos, 1, comparador);
+    inserirPontosMedios(arv, (void **) pontos, 1);
     assert(arv->raiz->val == p2);
     free(pontos);
     free(arv);
@@ -182,7 +182,7 @@ void testeAcharMaisProx() {
     pontos[4] = p5;
     pontos[5] = p6;
     pontos[6] = p7;
-    inserirPontosMedios(arv, (void **) pontos, 7, comparador);
+    inserirPontosMedios(arv, (void **) pontos, 7);
 
     int pontoPesquisa[] = {10, 2};
     tnode *res = acharPontoMaisProx(arv, pontoPesquisa);
@@ -195,6 +195,46 @@ void testeAcharMaisProx() {
     int pontoPesquisa3[] = {4, 1};
     res = acharPontoMaisProx(arv, pontoPesquisa3);
     assert(res->val == p1);
+    free(pontos);
+    free(arv);
+}
+
+void testeAcharMaisProxCoord() {
+    kdtree *arv = (kdtree *) malloc(sizeof(kdtree));
+    montarArvore(arv, 2, comparadorObjeto);
+
+    coord p1 = {'a',4, 5};
+    coord p2 = {'a',1, 4};
+    coord p3 = {'a',7, 4};
+    coord p4 = {'a',-2, 4};
+    coord p5 = {'a',-4, 2};
+    coord p6 = {'a',8, 6};
+    coord p7 = {'a',9, 2};
+
+    coord **pontos = (coord **) malloc(7 * sizeof(coord*));
+    pontos[0] = &p2;
+    pontos[1] = &p1;
+    pontos[2] = &p3;
+    pontos[3] = &p4;
+    pontos[4] = &p5;
+    pontos[5] = &p6;
+    pontos[6] = &p7;
+    inserirPontosMedios(arv, (void **) pontos, 7);
+
+    coord pontoPesquisa[] = {'a',10, 2};
+    tnode *res = acharPontoMaisProx(arv, pontoPesquisa);
+    assert((*(coord *)res->val).lat == p7.lat);
+    assert((*(coord *)res->val).lon == p7.lon);
+
+    coord pontoPesquisa2[] = {'a',7, 5};
+    res = acharPontoMaisProx(arv, pontoPesquisa2);
+    assert((*(coord *)res->val).lat == p3.lat);
+    assert((*(coord *)res->val).lon == p3.lon);
+
+    coord pontoPesquisa3[] = {'a',4, 1};
+    res = acharPontoMaisProx(arv, pontoPesquisa3);
+    assert((*(coord *)res->val).lat == p1.lat);
+    assert((*(coord *)res->val).lon == p1.lon);
     free(pontos);
     free(arv);
 }
@@ -258,6 +298,7 @@ int main() {
     testeInsercaoItemCoord();
     testeInsercaoPontos();
     testeAcharMaisProx();
+    testeAcharMaisProxCoord();
     testaSucessor();
     testaAntecessor();
     return EXIT_SUCCESS;
