@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "kdtree.h"
+#include "libKdTree/kdtree.h"
  int comparador(const void* a, const void* b, int k){
      //comparador de inteiros
      int a1 = ((int*) a)[k];

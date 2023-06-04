@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-#include "../kdtree.h"
+#include "../libKdTree/kdtree.h"
 
 int comparador(const void *a, const void *b, int k) {
     //comparador de inteiros
