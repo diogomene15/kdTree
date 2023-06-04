@@ -1,8 +1,12 @@
 #ifndef KDTREE_H
 #define KDTREE_H
 
+typedef struct item{
+    void *coord;
+    void *data;
+}treg;
 typedef struct node{
-    void *val;
+    treg* val;
     struct node* pai;
     struct node* d;
     struct node* e;
@@ -15,8 +19,8 @@ typedef struct kdtree{
 }kdtree;
 
 void montarArvore(kdtree* arv, int k, int (*comparador)(const void* a, const void *b, int k));
-void inserirItem(kdtree* arv, void* item);
-void inserirPontosMedios(kdtree * arv, void** pontos, int qtdPontos, int (*comparador)(const void* a, const void *b, int k));
+void inserirItem(kdtree* arv, treg* item);
+void inserirPontosMedios(kdtree * arv, treg** pontos, int qtdPontos, int (*comparador)(const void* a, const void *b, int k));
 tnode* acharPontoMaisProx(kdtree* arv, void* ponto);
 tnode* sucessor(tnode* node);
 tnode* antecessor(tnode* node);
