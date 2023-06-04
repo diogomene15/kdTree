@@ -57,11 +57,12 @@ ordenarPontosPorD(void **pontos, int inicio, int fim, int k, int (*comparador)(c
     }
 }
 
-tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int maxK,
+tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int maxK, tnode* pai,
                                int (*comparador)(const void *a, const void *b, int k)) {
     tnode *nodeRes = (tnode *) malloc(sizeof(tnode));
     if (inicio == fim) {
         (*nodeRes).val = pontos[fim];
+        (*nodeRes).pai = pai;
         (*nodeRes).d = NULL;
         (*nodeRes).e = NULL;
         return nodeRes;
@@ -69,8 +70,9 @@ tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int ma
     ordenarPontosPorD(pontos, inicio, fim, k, comparador);
     int mediana = (fim + inicio) / 2;
     (*nodeRes).val = pontos[mediana];
-    (*nodeRes).e = inserirPontosMediosRaiz(pontos, inicio, mediana - 1, (k + 1) % maxK, maxK, comparador);
-    (*nodeRes).d = inserirPontosMediosRaiz(pontos, mediana + 1, fim, (k + 1) % maxK, maxK, comparador);
+    (*nodeRes).pai = pai;
+    (*nodeRes).e = inserirPontosMediosRaiz(pontos, inicio, mediana - 1, (k + 1) % maxK, maxK,nodeRes, comparador);
+    (*nodeRes).d = inserirPontosMediosRaiz(pontos, mediana + 1, fim, (k + 1) % maxK, maxK,nodeRes, comparador);
     return nodeRes;
 }
 
@@ -82,7 +84,7 @@ tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int ma
 **/
 void
 inserirPontosMedios(kdtree *arv, void **pontos, int qtdPontos, int (*comparador)(const void *a, const void *b, int k)) {
-    (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos - 1, 0, (*arv).k, comparador);
+    (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos - 1, 0, (*arv).k, NULL, comparador);
 }
 
 double calcularDistancia(void *a, void *b, int kMax, int (*comparador)(const void *a, const void *b, int k)) {
