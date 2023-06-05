@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "../libKdTree/kdtree.h"
 
-int comparador(const void *a, const void *b, int k) {
+float comparador(const void *a, const void *b, int k) {
     //comparador de inteiros
     int a1 = ((int *) a)[k];
     int b1 = ((int *) b)[k];
@@ -16,7 +16,7 @@ typedef struct coord {
     int lon;
 } coord;
 
-int comparadorObjeto(const void *a, const void *b, int k) {
+float comparadorObjeto(const void *a, const void *b, int k) {
     //comparador de inteiros
     int a1 = 0;
     int b1 = 0;
