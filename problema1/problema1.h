@@ -12,22 +12,24 @@
 #define TAM_COD_SIAFI 5
 #define TAM_FUSO_HORARIO 30
 typedef struct regMunicipio{
-    int lat;
-    int lon;
+    float lat;
+    float lon;
     char codIBGE[TAM_COD_IBGE];
     char codSIAFI[TAM_COD_SIAFI];
     char nomeMunicipio[TAM_NOME_MUNICIPIO];
     int capital;
-    char codigo_uf[TAM_CODIGO_UF];
-    char uf_estado[TAM_UF_ESTADO];
+    int numUf;
+    char codigoUf[TAM_CODIGO_UF];
+    char ufEstado[TAM_UF_ESTADO];
     char regiao[TAM_REGIAO];
     int ddd;
     char fusoHorario[TAM_FUSO_HORARIO];
 } municipio;
 
 typedef struct regEstado{
-    int codigo_uf;
-    char uf_estado[TAM_UF_ESTADO];
+    int numUf;
+    char codigoUf[TAM_CODIGO_UF];
+    char ufEstado[TAM_UF_ESTADO];
     char regiao[TAM_REGIAO];
 }estado;
 

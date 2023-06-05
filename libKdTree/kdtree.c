@@ -1,7 +1,7 @@
 #include "kdtree.h"
 #include <stdlib.h>
 
-void montarArvore(kdtree *arv, int k, int (*comparador)(const void *a, const void *b, int k)) {
+void montarArvore(kdtree *arv, int k, float (*comparador)(const void *a, const void *b, int k)) {
     (*arv).raiz = NULL;
     (*arv).k = k;
     (*arv).comparador = comparador;
@@ -30,7 +30,7 @@ void inserirItem(kdtree *arv, void *item) {
     *pNode = novo;
 }
 
-int partitionPontos(void **pontos, int inicio, int fim, int k, int (*comparador)(const void *a, const void *b, int k)) {
+int partitionPontos(void **pontos, int inicio, int fim, int k, float (*comparador)(const void *a, const void *b, int k)) {
     void *pivot = pontos[fim];
     int i = inicio;
     for (int j = inicio; j < fim; j++) {
@@ -49,7 +49,7 @@ int partitionPontos(void **pontos, int inicio, int fim, int k, int (*comparador)
 }
 
 void
-ordenarPontosPorD(void **pontos, int inicio, int fim, int k, int (*comparador)(const void *a, const void *b, int k)) {
+ordenarPontosPorD(void **pontos, int inicio, int fim, int k, float (*comparador)(const void *a, const void *b, int k)) {
     if (fim > inicio) {
         int indicePivo = partitionPontos(pontos, inicio, fim, k, comparador);
         ordenarPontosPorD(pontos, inicio, indicePivo - 1, k, comparador);
@@ -58,8 +58,9 @@ ordenarPontosPorD(void **pontos, int inicio, int fim, int k, int (*comparador)(c
 }
 
 tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int maxK, tnode* pai,
-                               int (*comparador)(const void *a, const void *b, int k)) {
+                               float (*comparador)(const void *a, const void *b, int k)) {
     tnode *nodeRes = (tnode *) malloc(sizeof(tnode));
+    if(inicio > fim) return NULL;
     if (inicio == fim) {
         (*nodeRes).val = pontos[fim];
         (*nodeRes).pai = pai;
@@ -68,7 +69,7 @@ tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int ma
         return nodeRes;
     }
     ordenarPontosPorD(pontos, inicio, fim, k, comparador);
-    int mediana = (fim + inicio) / 2;
+    int mediana = inicio + (fim - inicio ) / 2;
     (*nodeRes).val = pontos[mediana];
     (*nodeRes).pai = pai;
     (*nodeRes).e = inserirPontosMediosRaiz(pontos, inicio, mediana - 1, (k + 1) % maxK, maxK,nodeRes, comparador);
@@ -84,20 +85,20 @@ tnode *inserirPontosMediosRaiz(void **pontos, int inicio, int fim, int k, int ma
 **/
 void
 inserirPontosMedios(kdtree *arv, void **pontos, int qtdPontos) {
-    (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, qtdPontos - 1, 0, (*arv).k, NULL, (*arv).comparador);
+    (*arv).raiz = inserirPontosMediosRaiz(pontos, 0, (qtdPontos - 1), 0, (*arv).k, NULL, (*arv).comparador);
 }
 
-double calcularDistancia(void *a, void *b, int kMax, int (*comparador)(const void *a, const void *b, int k)) {
+double calcularDistancia(void *a, void *b, int kMax, float (*comparador)(const void *a, const void *b, int k)) {
     double distancia = 0.0;
     for (int k = 0; k < kMax; k++) {
-        double diff = comparador(a, b, k);
+        double diff = (double) comparador(a, b, k);
         distancia += diff * diff;
     }
     return distancia;
 }
 
 void encontrarMaisProximo(tnode *node, void *ponto, int kMax, int profundidade, tnode **pontoMaisProx,
-                          double *menorDistancia, int (*comparador)(const void *a, const void *b, int k)) {
+                          double *menorDistancia, float (*comparador)(const void *a, const void *b, int k)) {
     if (node == NULL) {
         return;
     }
@@ -110,7 +111,7 @@ void encontrarMaisProximo(tnode *node, void *ponto, int kMax, int profundidade, 
     }
 
     int k = profundidade % kMax;
-    int comparacao = comparador(ponto, node->val, k);
+    float comparacao = comparador(ponto, node->val, k);
 
     if (comparacao < 0) {
         encontrarMaisProximo(node->e, ponto, kMax, profundidade + 1, pontoMaisProx, menorDistancia, comparador);
