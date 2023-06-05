@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "problema1.h"
-#include "../libKdTree/kdtree.h"
 int contaLinhas(const char* nomeArquivo){
     int totalLinhas = 0;
     FILE* arquivo = fopen(nomeArquivo, "r");
@@ -60,7 +59,12 @@ estado findEstado(int numUf, estado* estados, int tamanhoVetor) {
 }
 
 
-void lerMunicipio(municipio*** listaMunicipios, int* numMunicipios, estado* estados, int numEstados){
+void lerMunicipio(municipio*** listaMunicipios, int* numMunicipios){
+
+    int numEstados;
+    estado* estados;
+    lerEstados(&estados, &numEstados);
+
     FILE* arquivoEstados = fopen("./municipios.csv", "r");
     if(arquivoEstados == NULL){
         printf("Arquivo de estados nao encontrado!!");
@@ -126,24 +130,23 @@ float comparadorMunicipios(const void *a, const void *b, int k) {
     return a1 - b1;
 }
 
-int main(){
-    int numEstados;
-    estado* estados;
-
+kdtree montarArvoreMunicipios(){
     int numMunicipios;
     municipio** municipios;
 
-    lerEstados(&estados, &numEstados);
-    lerMunicipio(&municipios, &numMunicipios, estados, numEstados);
+    lerMunicipio(&municipios, &numMunicipios);
     kdtree arvore;
     int k = 2;
 
     montarArvore(&arvore, k, comparadorMunicipios);
     inserirPontosMedios(&arvore, (void**) municipios, numMunicipios);
+    return arvore;
+}
+municipio* municipioMaisProximo(ponto pontoR, kdtree* arvore){
     municipio ponto;
-    ponto.lat = -90;
-    ponto.lon = 90;
-    tnode* pontoMaisProx = acharPontoMaisProx(&arvore, &ponto);
-    (pontoMaisProx);
-    return EXIT_SUCCESS;
+    ponto.lat = pontoR.lat;
+    ponto.lon = pontoR.lon;
+
+    tnode* pontoMaisProx = acharPontoMaisProx(arvore, &ponto);
+    return (municipio*) (pontoMaisProx->val);
 }

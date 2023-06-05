@@ -3,6 +3,9 @@
 //
 
 #ifndef PROBLEMA1_H
+
+#include "../libKdTree/kdtree.h"
+
 #define PROBLEMA1_H
 #define TAM_COD_IBGE 8
 #define TAM_NOME_MUNICIPIO 40
@@ -33,4 +36,10 @@ typedef struct regEstado{
     char regiao[TAM_REGIAO];
 }estado;
 
+typedef struct ponto{
+    float lat;
+    float lon;
+}ponto;
+kdtree montarArvoreMunicipios();
+municipio* municipioMaisProximo(ponto pontoR, kdtree* arvore);
 #endif //PROBLEMA1_H
