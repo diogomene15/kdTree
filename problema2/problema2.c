@@ -4,6 +4,7 @@
 #include "problema2.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 int contaLinhas(const char* nomeArquivo){
     int totalLinhas = 0;
     FILE* arquivo = fopen(nomeArquivo, "r");
@@ -22,46 +23,72 @@ void lerRestaurante(restaurante *** listaRestaurantes, int* numRestaurantes){
         printf("Arquivo de estados nao encontrado!!");
         return;
     }
-    int linhasArquivo = contaLinhas("./municipios.csv");
-    *numRestaurantes = linhasArquivo;
+    int linhasArquivo = contaLinhas("./Fast_Food_Restaurants_US.csv");
     (*listaRestaurantes) = (restaurante**) malloc(linhasArquivo* sizeof(restaurante*));
     fscanf(arquivoRestaurante, "%*[^\n]");
-
     int contador = 0;
     while(feof(arquivoRestaurante)==0){
-        char address[100];
-        char categories[255];
-        char city[100];
-        char country[3];
-        float lat;
-        float lon;
-        char name[100];
-        char postalCode[6];
-        char province[3];
-        char website[1500];
         restaurante * novoRestaurante = (restaurante *) malloc(sizeof(restaurante));
-        fscanf(arquivoRestaurante, "%*d");
-        fscanf(arquivoRestaurante,",%[^,]",address);
-        fscanf(arquivoRestaurante,",%[^,]",categories);
-        fscanf(arquivoRestaurante,",%[^,]",city);
-        fscanf(arquivoRestaurante,",%[^,]",country);
-        fscanf(arquivoRestaurante,",%f",&lat);
-        fscanf(arquivoRestaurante,",%f",&lon);
-        fscanf(arquivoRestaurante,",%[^,]",name);
-        fscanf(arquivoRestaurante,",%5s",postalCode);
-        fscanf(arquivoRestaurante,",%2s",province);
-        fscanf(arquivoRestaurante,",%[^\n]",website);
+        int temp;
+        fscanf(arquivoRestaurante, "%d,",&temp);
+        fscanf(arquivoRestaurante,"%[^,]",novoRestaurante->address);
+        fscanf(arquivoRestaurante,",%[^,\"]",novoRestaurante->categories);
+        if(novoRestaurante->categories[0]=='\0'){
+            fscanf(arquivoRestaurante,"\"%[^\"]%*c",novoRestaurante->categories);
+        }
+        fscanf(arquivoRestaurante,",%[^,]",novoRestaurante->city);
+        fscanf(arquivoRestaurante,",%[^,]",novoRestaurante->country);
+        fscanf(arquivoRestaurante,",%f,",&novoRestaurante->lat);
+        fscanf(arquivoRestaurante,"%f,",&novoRestaurante->lon);
+        fscanf(arquivoRestaurante,"%[^,\"]",novoRestaurante->name);
+        if(novoRestaurante->name[0]=='\0'){
+            fscanf(arquivoRestaurante,"\"%[^\"]%*c",novoRestaurante->name);
+        }
+        fscanf(arquivoRestaurante,",%[^,]",novoRestaurante->postalCode);
+        fscanf(arquivoRestaurante,",%2s",novoRestaurante->province);
+        fscanf(arquivoRestaurante,",%[^\n]",novoRestaurante->website);
 
-
-        (*listaRestaurantes)[contador] = novoRestaurante;
-        contador++;
+        (*listaRestaurantes)[contador++] = novoRestaurante;
     }
-
+    *numRestaurantes = contador;
 }
 
-int main(){
-    restaurante** listaRestaurantes;
+float comparadorRestaurante(const void *a, const void *b, int k) {
+    float a1 = 0;
+    float b1 = 0;
+    if (k == 0) {
+        a1 = ((restaurante *) a)->lat + 90;
+        b1 = ((restaurante *) b)->lat + 90;
+    } else {
+        a1 = ((restaurante *) a)->lon + 180;
+        b1 = ((restaurante *) b)->lon + 180;
+    }
+    return a1 - b1;
+}
+kdtree montarArvoreRestaurantes(){
     int contRestautantes;
+    restaurante** restaurantes;
 
-    lerRestaurante(&listaRestaurantes, &contRestautantes);
+    lerRestaurante(&restaurantes, &contRestautantes);
+    kdtree arvore;
+    int k = 2;
+    printf("sa%das", contRestautantes);
+    montarArvore(&arvore, k, comparadorRestaurante);
+    inserirPontosMedios(&arvore, (void**) restaurantes, contRestautantes);
+    return arvore;
+}
+
+restaurante* restauranteMaisProximo(ponto pontoR, kdtree* arvore){
+    restaurante ponto;
+    ponto.lat = pontoR.lat;
+    ponto.lon = pontoR.lon;
+
+    tnode* pontoMaisProx = acharPontoMaisProx(arvore, &ponto);
+    return (restaurante*) (pontoMaisProx->val);
+}
+int main(){
+    kdtree arvoreRest =  montarArvoreRestaurantes();
+    ponto pontoDesejado = {10,-9};
+    restaurante* reas = restauranteMaisProximo(pontoDesejado, &arvoreRest);
+    printf("%s",reas->name );
 }
