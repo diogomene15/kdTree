@@ -20,7 +20,7 @@ int contaLinhas(const char* nomeArquivo){
 void lerRestaurante(restaurante *** listaRestaurantes, int* numRestaurantes){
     FILE* arquivoRestaurante = fopen("./Fast_Food_Restaurants_US.csv", "r");
     if(arquivoRestaurante == NULL){
-        printf("Arquivo de estados nao encontrado!!");
+        printf("Arquivo de restaurantes nao encontrado!!");
         return;
     }
     int linhasArquivo = contaLinhas("./Fast_Food_Restaurants_US.csv");
@@ -72,7 +72,6 @@ kdtree montarArvoreRestaurantes(){
     lerRestaurante(&restaurantes, &contRestautantes);
     kdtree arvore;
     int k = 2;
-    printf("sa%das", contRestautantes);
     montarArvore(&arvore, k, comparadorRestaurante);
     inserirPontosMedios(&arvore, (void**) restaurantes, contRestautantes);
     return arvore;
@@ -85,10 +84,4 @@ restaurante* restauranteMaisProximo(ponto pontoR, kdtree* arvore){
 
     tnode* pontoMaisProx = acharPontoMaisProx(arvore, &ponto);
     return (restaurante*) (pontoMaisProx->val);
-}
-int main(){
-    kdtree arvoreRest =  montarArvoreRestaurantes();
-    ponto pontoDesejado = {10,-9};
-    restaurante* reas = restauranteMaisProximo(pontoDesejado, &arvoreRest);
-    printf("%s",reas->name );
 }

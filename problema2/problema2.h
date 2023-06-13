@@ -22,4 +22,6 @@ typedef struct ponto{
     float lat;
     float lon;
 }ponto;
+kdtree montarArvoreRestaurantes();
+restaurante* restauranteMaisProximo(ponto pontoR, kdtree* arvore);
 #endif //KDTREE_PROBLEMA2_H
